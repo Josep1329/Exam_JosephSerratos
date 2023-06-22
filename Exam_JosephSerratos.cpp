@@ -1,125 +1,39 @@
-#include <iostream>
-#include <iomanip>
+﻿#include <iostream>
 
-using namespace std;
+int main() {
+    
+    int diceRoll = rand() % 6 + 1;
+    std::string playerChoice;
 
-struct Producto
-{
-    char nombre[20];
-    float precio;
-    int cantidad;
-};
+    std::cout << "Choose even or odd: ";
+    std::cin >> playerChoice;
 
-void menu();
-int altaProducto(Producto p[], int cont);
-void ventaProducto(Producto p[], int cont);
-void imprimeInventario(const Producto p[], const int cont);
+    
+    char playerSymbol = (diceRoll % 2 == 0 && playerChoice == "even") || (diceRoll % 2 != 0 && playerChoice == "odd") ? 'X' : 'O';
 
-int main()
-{
-    Producto listaProductos[10];
-    int contProducto = 0;
-    char opcion;
+    std::cout << "You got " << diceRoll << ". You are assigned " << playerSymbol << ".\n";
 
-    do {
-        menu();
-        cin >> opcion;
+   
+    int matrix[3][4];
+    int evenSum = 0;
+    int positionSum = 0;
 
-        switch (opcion)
-        {
-        case '1':
-            contProducto = altaProducto(listaProductos, contProducto);
-            break;
+    std::cout << "Enter the elements of the matrix (3x4):\n";
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            std::cin >> matrix[i][j];
 
-        case '2':
-            ventaProducto(listaProductos, contProducto);
-            break;
-
-        case '3':
-            imprimeInventario(listaProductos, contProducto);
-            break;
-
-        case '4':
-            cout << "\n\nBye :3" << endl;
-            break;
-
-        default:
-            cout << "\n\nOpcion no valida compa" << endl;
-            break;
+            if (matrix[i][j] % 2 == 0) {
+                evenSum += matrix[i][j];
+                positionSum += ((i * 10) + j);
+            }
         }
+    }
 
-    } while (opcion != '4');
+    int total = evenSum - positionSum;
+    std::cout << "The sum of even numbers is " << evenSum << ".\n";
+    std::cout << "The sum of positions is " << positionSum << ".\n";
+    std::cout << "The total is " << total << ".\n";
 
     return 0;
-}
-
-void menu()
-{
-    cout << "\n         OBJETOS BIEN PERRONES"
-        << "\n==========================="
-        << "\n1.-  Productos "
-        << "\n2.- Venta Producto"
-        << "\n3.- Inventario"
-        << "\n4.- Salir"
-        << "\n==========================="
-        << "\nOPCION (1-4): ";
-}
-
-int altaProducto(Producto p[], int cont)
-{
-    if (cont < 10)
-    {
-        cin.ignore(80, '\n');
-        cout << "\nNombre: "; cin.getline(p[cont].nombre, 50);
-        cout << "Precio: "; cin >> p[cont].precio;
-        cout << "Cantidad: "; cin >> p[cont].cantidad;
-
-        cont++;
-    }
-    else
-        cout << "\n\nEspacio insuficiente :c" << endl;
-
-    return cont;
-}
-
-void ventaProducto(Producto p[], int cont)
-{
-    int numero, cantidad;
-
-    cout << "\nNumero o Codigo del Producto: ";
-    cin >> numero;
-
-    if (numero >= cont)
-        cout << "\n\nEl producto no existe we >:v" << endl;
-    else
-    {
-        cout << "Cantidad: "; cin >> cantidad;
-
-        if (cantidad > p[numero].cantidad)
-            cout << "\n\nExistencia insuficiente D;" << endl;
-        else
-        {
-            p[numero].cantidad -= cantidad;
-
-            cout << endl << p[numero].nombre << " " << cantidad << " vendido" << endl;
-            cout << "Existencias: " << p[numero].cantidad << endl;
-        }
-
-    }
-}
-
-void imprimeInventario(const Producto p[], int cont)
-{
-    cout << "\n             INVENTARIO"
-        << "\n========================================="
-        << "\n" << setw(20) << "NOMBRE" << setw(10) << "PRECIO" << setw(10) << "CANTIDAD"
-        << "\n=========================================" << endl;
-
-
-    for (int i = 0; i < cont; i++)
-    {
-        cout << resetiosflags(ios::right);
-        cout << setiosflags(ios::left) << setw(20) << p[i].nombre;
-        cout << setiosflags(ios::right) << setw(8) << p[i].precio << setw(8) << p[i].cantidad << endl;
-    }
 }
