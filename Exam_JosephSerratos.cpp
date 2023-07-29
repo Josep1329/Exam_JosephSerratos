@@ -1,233 +1,231 @@
-﻿
-#include <iostream>
-#include <cstdlib> 
+﻿#include <iostream>
 #include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
 
 using namespace std;
 
-class Critter
-{
-public:
-    Critter(int hunger = 10, int boredom = 20, int tiredness = 50); 
-    void Talk();
-    void Eat(int food = 4);
-    void Play(int fun = 4);
-    void Rest(int sleep = 4);
-    void ShowNecessities();
-    bool IsHappy();
-    bool IsUnwell();
-    bool IsDying();
 
-private:
-    int m_Hunger;
-    int m_Boredom;
-    int m_Tiredness;
-    void PassTime(int time = 1);
-};
-
-Critter::Critter(int hunger, int boredom, int tiredness) :
-    m_Hunger(hunger),
-    m_Boredom(boredom),
-    m_Tiredness(tiredness)
-{}
-
-void Critter::PassTime(int time)
-{
-    m_Hunger -= time;
-    m_Boredom -= time;
-    m_Tiredness -= time;
-
-    if (m_Hunger < 0)
-    {
-        m_Hunger = 0;
+int factorial(int n) {
+    if (n == 0) {
+        return 1;
     }
-    if (m_Boredom < 0)
-    {
-        m_Boredom = 0;
+    else {
+        return n * factorial(n - 1);
     }
-    if (m_Tiredness < 0)
-    {
-        m_Tiredness = 0;
-    }
-}
-
-void Critter::Talk()
-{
-    ShowNecessities();
-    if (IsDying())
-    {
-        cout << "\nI'm dying, do something! I need ";
-        if (m_Hunger <= 0)
-            cout << "food";
-        else if (m_Boredom <= 0)
-            cout << "to play";
-        else if (m_Tiredness <= 0)
-            cout << "rest";
-        cout << ".\n";
-
-        
-        if (m_Hunger <= 0 || m_Boredom <= 0 || m_Tiredness <= 0)
-        {
-            cout << "\nYour mascot has died. Game Over.\n";
-            exit(0);
-        }
-    }
-    else if (IsUnwell())
-    {
-        cout << "\nI'm not feeling well. I need ";
-        if (m_Hunger <= 10)
-            cout << "food";
-        else if (m_Boredom <= 10)
-            cout << "to play";
-        else if (m_Tiredness <= 10)
-            cout << "rest";
-        cout << ".\n";
-    }
-    else if (IsHappy())
-    {
-        cout << "\nI'm happy!\n";
-    }
-}
-
-void Critter::Eat(int food)
-{
-    cout << "\nBrrupp. \n";
-    m_Hunger += food;
-    PassTime();
-}
-
-void Critter::Play(int fun)
-{
-    cout << "\nWheee!\n";
-    m_Boredom += fun;
-    PassTime();
-}
-
-void Critter::Rest(int sleep)
-{
-    cout << "\nZzzzzz...\n";
-    m_Tiredness += sleep;
-    PassTime();
-}
-
-void Critter::ShowNecessities()
-{
-    cout << "\nList of necessities:\n";
-    cout << "Hunger: " << m_Hunger << endl;
-    cout << "Boredom: " << m_Boredom << endl;
-    cout << "Tiredness: " << m_Tiredness << endl;
-}
-
-bool Critter::IsHappy()
-{
-    return m_Hunger >= 40 && m_Boredom >= 40 && m_Tiredness >= 40;
-}
-
-bool Critter::IsUnwell()
-{
-    return (m_Hunger <= 20 || m_Boredom <= 20 || m_Tiredness <= 20) && !IsDying();
-}
-
-bool Critter::IsDying()
-{
-    return m_Hunger <= 0 || m_Boredom <= 0 || m_Tiredness <= 0;
-}
-
-int main()
-{
-    Critter crit;
-    int choice;
-    do
-    {
-        cout << "\n Mascotas Virtuales\n\n";
-        cout << "0 - Salir.\n";
-        cout << "1 - Escucha a tu mascota.\n";
-        cout << "2 - Alimentar.\n";
-        cout << "3 - Jugar con tu mascota.\n";
-        cout << "4 - Descansar.\n";
-        cout << "Elige una opción: ";
-        cin >> choice;
-
-        switch (choice)
-        {
-        case 0:
-            cout << "Vuelve pronto!.\n";
-            break;
-        case 1:
-            crit.Talk();
-            break;
-        case 2:
-            crit.Eat();
-            break;
-        case 3:
-            crit.Play();
-            break;
-        case 4:
-            crit.Rest();
-            break;
-        default:
-            cout << "\n Tu elección es inválida. \n";
-        }
-    } while (choice != 0);
-
-    if (crit.IsDying())
-    {
-        cout << "\nYour mascot has died. Game Over.\n";
-    }
-}
-
-
-
-
-void readNumbers(std::vector<int>& numbers) 
-{
-    std::cout << "Enter 8 numbers:\n";
-    for (int i = 0; i < 8; ++i) {
-        std::cin >> numbers[i];
-    }
-}
-
-
-int countEvenDigits(int number) {
-    int count = 0;
-    while (number != 0) {
-        int digit = number % 10;
-        if (digit % 2 == 0) {
-            ++count;
-        }
-        number /= 10;
-    }
-    return count;
-}
-
-
-int findLargestEvenDigitsIndex(const std::vector<int>& numbers) {
-    int maxEvenDigits = -1;
-    int index = -1;
-
-    for (size_t i = 0; i < numbers.size(); ++i) {
-        int evenDigitsCount = countEvenDigits(numbers[i]);
-        if (evenDigitsCount > maxEvenDigits) {
-            maxEvenDigits = evenDigitsCount;
-            index = i;
-        }
-    }
-
-    return index;
 }
 
 int main() {
-    std::vector<int> numbers(8);
-    readNumbers(numbers);
+    int choice;
 
-    int* largestEvenDigitsNumberPtr = &numbers[findLargestEvenDigitsIndex(numbers)];
+    do {
+             cout << "\nChoose a task:\n";
+             cout << "1. Generate triples of numbers\n";
+             cout << "2. Find the largest number\n";
+             cout << "3. Display the first 10 Fibonacci numbers\n";
+             cout << "4. Count how many times the largest number is repeated\n";
+             cout << "5. Find positions of numbers ending in 4\n";
+             cout << "6. Find positions of the number with the most digits\n";
+             cout << "7. Calculate factorials of 10 numbers\n";
+             cout << "8. Guess my number \n";
+             cout << "0. Exit\n";
+             cout << "Enter your choice: ";
+             cin >> choice;
 
-    std::cout << "The number with the largest number of even digits is: " << *largestEvenDigitsNumberPtr << std::endl;
-    std::cout << "Memory address of the number: " << largestEvenDigitsNumberPtr << std::endl;
-    std::cout << "Position of the number in the vector: " << largestEvenDigitsNumberPtr - &numbers[0] << std::endl;
+        switch (choice) {
+        case 1: {
+            
+            for (int i = 1; i <= 3; ++i) {
+                for (int j = 1; j <= 3; ++j) {
+                    for (int k = 1; k <= 3; ++k) {
+                        std::cout << i << "\t" << j << "\t" << k << "\n";
+                    }
+                }
+            }
+            break;
+        }
+        case 2: {
+            
+                vector<int> numbers;
+            int num;
+
+            for (int i = 0; i < 12; ++i) {
+                    cout << "Enter an integer: ";
+                    cin >> num;
+                numbers.push_back(num);
+            }
+
+            int largest_number = *max_element(numbers.begin(), numbers.end());
+                cout << "The largest number is: " << largest_number << "\n";
+            break;
+        }
+        case 3: {
+            
+                vector<int> fibonacci{0, 1};
+
+            while (fibonacci.size() < 10) {
+                int next_num = fibonacci[fibonacci.size() - 1] + fibonacci[fibonacci.size() - 2];
+                fibonacci.push_back(next_num);
+            }
+
+               cout << "The first 10 Fibonacci numbers are:";
+            for (int num : fibonacci) {
+                  cout << " " << num;
+            }
+            std::cout << "\n";
+            break;
+        }
+        case 4: {
+            
+               vector<int> numbers;
+            int num;
+
+            for (int i = 0; i < 8; ++i) {
+                     cout << "Enter an integer: ";
+                     cin >> num;
+                numbers.push_back(num);
+            }
+
+            int largest_number = *max_element(numbers.begin(), numbers.end());
+            int count_largest = count(numbers.begin(), numbers.end(), largest_number);
+
+                cout << "The largest number " << largest_number << " is repeated " << count_largest << " times.\n";
+            break;
+        }
+        case 5: {
+            
+               vector<int> numbers;
+            int num;
+
+            for (int i = 0; i < 10; ++i) {
+                     cout << "Enter an integer: ";
+                     cin >> num;
+                numbers.push_back(num);
+            }
+
+                 vector<int> positions_ending_in_4;
+            for (int i = 0; i < numbers.size(); ++i) {
+                if (numbers[i] % 10 == 4) {
+                    positions_ending_in_4.push_back(i);
+                }
+            }
+
+                cout << "Positions of numbers ending in 4:";
+            for (int pos : positions_ending_in_4) {
+                   cout << " " << pos;
+            }
+                 cout << "\n";
+            break;
+        }
+        case 6: {
+            
+                vector<int> numbers;
+            int num;
+
+            for (int i = 0; i < 7; ++i) {
+                     cout << "Enter an integer: ";
+                     cin >> num;
+                numbers.push_back(num);
+            }
+
+            int max_digits = 0;
+                vector<int> positions_with_max_digits;
+            for (int i = 0; i < numbers.size(); ++i) {
+                int digits = 0;
+                int temp_num = numbers[i];
+                while (temp_num != 0) {
+                    temp_num /= 10;
+                    ++digits;
+                }
+                if (digits > max_digits) {
+                    max_digits = digits;
+                    positions_with_max_digits.clear();
+                    positions_with_max_digits.push_back(i);
+                }
+                else if (digits == max_digits) {
+                    positions_with_max_digits.push_back(i);
+                }
+            }
+
+                cout << "Position(s) with the most digits:";
+            for (int pos : positions_with_max_digits) {
+                    cout << " " << pos;
+            }
+              cout << "\n";
+            break;
+        }
+        case 7: {
+            
+                vector<int> numbers;
+            int num;
+
+            for (int i = 0; i < 10; ++i) {
+                   cout << "Enter an integer: ";
+                   cin >> num;
+                numbers.push_back(num);
+            }
+
+                 vector<int> factorials;
+            for (int num : numbers) {
+                factorials.push_back(factorial(num));
+            }
+
+                 cout << "Factorials of the numbers:";
+            for (int fact : factorials) {
+                 cout << " " << fact;
+            }
+                cout << "\n";
+            break;
+        }
+        case 8: {
+            srand(time(0)); 
+            int lowerBound = 1;
+            int upperBound = 100;
+            int guess;
+            char clue;
+
+            cout << "Think of a number between " << lowerBound << " and " << upperBound << "." << endl;
+            cout << "Press 'c' if the guess is correct, 'h' if it's higher, 'l' if it's lower, 'v' if it's very close, 'f' if it's far." << endl;
+
+            do {
+                guess = lowerBound + (rand() % (upperBound - lowerBound + 1));
+
+                cout << "Is the number " << guess << "? (c/h/l/v/f): ";
+                cin >> clue;
+
+                if (clue == 'h') {
+                    lowerBound = guess + 1;
+                }
+                else if (clue == 'l') {
+                    upperBound = guess - 1;
+                }
+                else if (clue == 'v') {
+                    lowerBound = max(lowerBound, guess - 10);
+                    upperBound = min(upperBound, guess + 10);
+                }
+                else if (clue == 'f') {
+                    lowerBound = max(lowerBound, guess + 11);
+                    upperBound = min(upperBound, guess - 11);
+                }
+
+            } while (clue != 'c');
+
+            cout << "Great! The number was " << guess << "." << endl;
+            return 0;
+        }
+              break;
+
+        case 0:
+               cout << "Exiting.\n";
+            break;
+            default:
+               cout << "Invalid choice. Try again.\n";
+            break;
+        }
+    } while (choice != 0);
 
     return 0;
 }
-
-
 
